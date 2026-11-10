@@ -15,10 +15,24 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import me.ash.reader.ui.component.glass.LiquidGlassStyle
+import me.ash.reader.ui.component.glass.liquidGlass
+import me.ash.reader.ui.component.glass.liquidGlassSupported
+import me.ash.reader.ui.component.glass.rememberLiquidGlassShader
+import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -36,6 +50,9 @@ fun FilterBar(
     filterBarFilled: Boolean,
     filterBarPadding: Dp,
     filterBarTonalElevation: Dp,
+    /** 页面内容录制层：给了就用液态玻璃折射，不给就走原来的 Surface */
+    backdrop: GraphicsLayer? = null,
+    backdropOrigin: Offset = Offset.Zero,
     filterOnClick: (Filter) -> Unit = {},
 ) {
     val view = LocalView.current
@@ -51,9 +68,37 @@ fun FilterBar(
         else -> 80.dp
     }
 
+    val density = LocalDensity.current.density
+    val isDark = LocalDarkTheme.current.isDarkTheme()
+    var selfOrigin by remember { mutableStateOf(Offset.Zero) }
+    val useGlass = liquidGlassSupported && backdrop != null
+    val glassModifier =
+        if (useGlass) {
+            val shader = rememberLiquidGlassShader()
+            Modifier
+                .onGloballyPositioned { selfOrigin = it.positionInRoot() }
+                .liquidGlass(
+                    backdrop = backdrop,
+                    shader = shader,
+                    style =
+                        LiquidGlassStyle(
+                            cornerRadiusDp = 0f,
+                            refractionHeightDp = 26f,
+                            refractionAmountDp = 12f,
+                            chromatic = 0.9f,
+                            borderAlpha = 0.5f,
+                            isDark = isDark,
+                        ),
+                    sampleOrigin = selfOrigin - backdropOrigin,
+                    density = density,
+                )
+        } else Modifier
+
     Surface(
-        color = MaterialTheme.colorScheme.surfaceColorAtElevation(filterBarTonalElevation),
-        modifier = modifier
+        color =
+            if (useGlass) Color.Transparent
+            else MaterialTheme.colorScheme.surfaceColorAtElevation(filterBarTonalElevation),
+        modifier = modifier.then(glassModifier)
     ) {
         Row(
             modifier =

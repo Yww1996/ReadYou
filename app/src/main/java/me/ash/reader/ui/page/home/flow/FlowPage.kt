@@ -90,12 +90,16 @@ import me.ash.reader.infrastructure.preference.LocalSortUnreadArticles
 import me.ash.reader.infrastructure.preference.PullToLoadNextFeedPreference
 import me.ash.reader.infrastructure.preference.SortUnreadArticlesPreference
 import me.ash.reader.ui.component.FilterBar
+import me.ash.reader.ui.component.glass.GlassBackdrop
 import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYExtensibleVisibility
 import me.ash.reader.ui.component.base.RYScaffold
 import me.ash.reader.ui.component.scrollbar.VerticalScrollIndicatorFactory
 import me.ash.reader.ui.component.scrollbar.drawVerticalScrollIndicator
 import me.ash.reader.ui.component.scrollbar.scrollIndicator
+import androidx.compose.ui.graphics.layer.GraphicsLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.geometry.Offset
 import me.ash.reader.ui.ext.collectAsStateValue
 import me.ash.reader.ui.ext.openURL
 import me.ash.reader.ui.motion.Direction
@@ -306,6 +310,10 @@ fun FlowPage(
 
     val isSyncing = viewModel.isSyncingFlow.collectAsStateValue()
 
+    val glassBackdrop = rememberGraphicsLayer()
+    var backdropOrigin by remember { mutableStateOf(Offset.Zero) }
+    var barOrigin by remember { mutableStateOf(Offset.Zero) }
+
     Box(modifier = Modifier.fillMaxSize()) {
         RYScaffold(
             containerTonalElevation = articleListTonalElevation.value.dp,
@@ -442,6 +450,7 @@ fun FlowPage(
                 }
             },
             content = {
+                GlassBackdrop(glassBackdrop, { backdropOrigin = it }) {
                 RYExtensibleVisibility(modifier = Modifier.zIndex(1f), visible = onSearch) {
                     BackHandler(onSearch) { onSearch = false }
                     SearchBar(
@@ -705,6 +714,7 @@ fun FlowPage(
                         }
                     }
                 }
+                }
             },
             floatingActionButtonPosition = FabPosition.Center,
             bottomBar = {
@@ -721,6 +731,8 @@ fun FlowPage(
                     filterBarFilled = true,
                     filterBarPadding = filterBarPadding.dp,
                     filterBarTonalElevation = filterBarTonalElevation.value.dp,
+                    backdrop = glassBackdrop,
+                    backdropOrigin = backdropOrigin,
                 ) {
                     if (filterUiState.filter != it) {
                         viewModel.changeFilter(filterUiState.copy(filter = it))
