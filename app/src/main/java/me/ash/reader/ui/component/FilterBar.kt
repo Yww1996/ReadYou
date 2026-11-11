@@ -83,9 +83,10 @@ fun FilterBar(
     val glassModifier =
         if (useGlass) {
             Modifier
+                .padding(start = 12.dp, end = 12.dp, bottom = 10.dp)
                 .shadow(
-                    elevation = 10.dp,
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(26.dp),
+                    elevation = 8.dp,
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
                     clip = false,
                 )
                 .onGloballyPositioned { selfOrigin = it.positionInRoot() }
@@ -99,7 +100,7 @@ fun FilterBar(
                                     shader = shader,
                                     style =
                                         LiquidGlassStyle(
-                                            cornerRadiusDp = 26f,
+                                            cornerRadiusDp = 28f,
                                             isDark = isDark,
                                         ),
                                     sampleOrigin = selfOrigin - backdropOrigin,
@@ -117,13 +118,14 @@ fun FilterBar(
         color =
             if (useGlass) Color.Transparent
             else MaterialTheme.colorScheme.surfaceColorAtElevation(filterBarTonalElevation),
-        modifier = modifier.then(glassModifier)
+        modifier = modifier
     ) {
         Row(
             modifier =
             Modifier
+                .then(if (useGlass) Modifier.navigationBarsPadding() else Modifier.windowInsetsPadding(NavigationBarDefaults.windowInsets))
+                .then(glassModifier)
                 .fillMaxWidth()
-                .windowInsetsPadding(NavigationBarDefaults.windowInsets)
                 .defaultMinSize(minHeight = containerHeight)
                 .selectableGroup(),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
