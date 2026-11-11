@@ -234,7 +234,7 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
     shader.setFloatUniform(
         "interiorMaskColor",
         1f, 1f, 1f,
-        if (style.isDark) style.interiorMaskAlpha else style.interiorMaskAlpha * 2f,
+        if (style.isDark) style.interiorMaskAlpha * 0.35f else style.interiorMaskAlpha * 2f,
     )
     shader.setFloatUniform("interiorMaskWidth", style.refractionHeightDp * density * 0.35f)
     if (style.isDark) {
@@ -243,7 +243,7 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
         shader.setFloatUniform("panelTint", 1f, 1f, 1f, 0.20f)
     }
     shader.setFloatUniform("borderWidth", 1.2f * density)
-    shader.setFloatUniform("borderAlpha", if (style.isDark) style.borderAlpha * 1.8f else style.borderAlpha)
+    shader.setFloatUniform("borderAlpha", style.borderAlpha)
     shader.setFloatUniform("edgeShadowAlpha", if (style.isDark) 0.30f else 0.22f)
     shader.setFloatUniform("outerGlowAlpha", 0.14f)
     shader.setFloatUniform("isDark", if (style.isDark) 1f else 0f)
