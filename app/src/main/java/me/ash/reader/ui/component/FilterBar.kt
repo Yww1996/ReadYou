@@ -76,7 +76,7 @@ fun FilterBar(
     val isDark = LocalDarkTheme.current.isDarkTheme()
     var selfOrigin by remember { mutableStateOf(Offset.Zero) }
     val glassBlurLayer = rememberGraphicsLayer()
-    val glassEdgeLayer = rememberGraphicsLayer()
+    val glassPanelLayer = rememberGraphicsLayer()
     val shader = rememberLiquidGlassShader()
     val useGlass = liquidGlassSupported && backdrop != null && shader != null
     val glassModifier =
@@ -90,7 +90,7 @@ fun FilterBar(
                                 drawLiquidGlass(
                                     backdrop = backdrop!!,
                                     blurLayer = glassBlurLayer,
-                                    edgeLayer = glassEdgeLayer,
+                                    panelLayer = glassPanelLayer,
                                     shader = shader,
                                     style =
                                         LiquidGlassStyle(

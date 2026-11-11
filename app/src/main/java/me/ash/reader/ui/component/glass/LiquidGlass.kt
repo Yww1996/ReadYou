@@ -47,7 +47,7 @@ data class LiquidGlassStyle(
     val refractionHeightDp: Float = 18f,
     val refractionAmountDp: Float = 13f,
     val chromaticAberration: Float = 0.22f,
-    /** 磨砂模糊半径（dp），液态玻璃是「模糊 + 折射」两层 */
+    /** 磨砂模糊半径（dp），模糊背板经折射和统一调色后一次合成。 */
     val blurRadiusDp: Float = 1.5f,
     val borderAlpha: Float = 0.18f,
     val interiorMaskAlpha: Float = 0.03f,
@@ -71,7 +71,6 @@ uniform float borderAlpha;
 uniform float edgeShadowAlpha;
 uniform float outerGlowAlpha;
 uniform float isDark;
-uniform float edgeOnly;
 float radiusAt(float2 coord, float4 radii) {
   if (coord.x >= 0.0) { if (coord.y <= 0.0) return radii.y; else return radii.z; }
   else { if (coord.y <= 0.0) return radii.x; else return radii.w; }
@@ -102,7 +101,6 @@ half4 main(float2 coord) {
     float alpha = max(outerLip * borderAlpha, outerGlow * outerGlowAlpha);
     return half4(0.0, 0.0, 0.0, alpha);
   }
-  if (edgeOnly > 0.5 && -sd >= refractionHeight) return half4(0.0);
   half4 color;
   if (refractionHeight <= 0.001 || -sd >= refractionHeight) {
     color = content.eval(coord);
@@ -170,13 +168,13 @@ fun GlassBackdrop(
 }
 
 /**
- * 玻璃绘制：把背板的对应区域录进模糊层和折射层，挂上 AGSL 折射效果后绘制。
+ * 玻璃绘制：先模糊背板，再对整个面板统一折射、调色，最终只合成一次。
  * 必须先 record 再设 renderEffect 再 drawLayer —— 效果作用在图层内容上。
  */
 fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
     backdrop: GraphicsLayer,
     blurLayer: GraphicsLayer,
-    edgeLayer: GraphicsLayer,
+    panelLayer: GraphicsLayer,
     shader: RuntimeShader,
     style: LiquidGlassStyle,
     sampleOrigin: Offset,
@@ -202,7 +200,7 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
         addRoundRect(RoundRect(Rect(Offset.Zero, barSize), CornerRadius(radiusPx)))
     }
 
-    // 底层：录制带留白的背板，模糊后只显示可见圆角矩形。
+    // 先录制带留白的背板，供整个面板的折射着色器采样。
     blurLayer.record(size = captureSize) {
         translate(-captureOrigin.x, -captureOrigin.y) { drawLayer(backdrop) }
     }
@@ -213,13 +211,10 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
                 android.graphics.Shader.TileMode.CLAMP,
             )
             .asComposeRenderEffect()
-    clipPath(barPath) {
-        translate(-paddingPx, -paddingPx) { drawLayer(blurLayer) }
-    }
-
-    // 上层：同样保留边缘外的采样内容，内部透明以露出底层磨砂。
-    edgeLayer.record(size = captureSize) {
-        translate(-captureOrigin.x, -captureOrigin.y) { drawLayer(backdrop) }
+    // 折射边缘和中央采样同一张模糊背板，并在同一遍着色中应用 panelTint。
+    // 不再单独绘制未调色的中央区域，避免夜间出现偏浅的内层玻璃。
+    panelLayer.record(size = captureSize) {
+        drawLayer(blurLayer)
     }
 
     // coord is in padded-layer space; subtract padding to get visible-bar space.
@@ -247,12 +242,11 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
     shader.setFloatUniform("edgeShadowAlpha", if (style.isDark) 0.30f else 0.22f)
     shader.setFloatUniform("outerGlowAlpha", 0.14f)
     shader.setFloatUniform("isDark", if (style.isDark) 1f else 0f)
-    shader.setFloatUniform("edgeOnly", 1f)
 
-    edgeLayer.renderEffect =
+    panelLayer.renderEffect =
         RenderEffect.createRuntimeShaderEffect(shader, "content").asComposeRenderEffect()
     // 必须裁到可见圆角矩形，否则带 padding 的图层会溢出到栏外，把上面的内容也扭曲掉
     clipPath(barPath) {
-        translate(-paddingPx, -paddingPx) { drawLayer(edgeLayer) }
+        translate(-paddingPx, -paddingPx) { drawLayer(panelLayer) }
     }
 }
