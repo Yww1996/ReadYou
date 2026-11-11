@@ -35,7 +35,6 @@ import me.ash.reader.ui.component.glass.liquidGlassSupported
 import me.ash.reader.ui.component.glass.rememberLiquidGlassShader
 import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.draw.shadow
 import android.util.Log
 import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import androidx.compose.ui.text.style.TextOverflow
@@ -84,11 +83,6 @@ fun FilterBar(
         if (useGlass) {
             Modifier
                 .padding(start = 12.dp, end = 12.dp, bottom = 10.dp)
-                .shadow(
-                    elevation = 8.dp,
-                    shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
-                    clip = false,
-                )
                 .onGloballyPositioned { selfOrigin = it.positionInRoot() }
                 .drawWithContent {
                     val ok =
