@@ -44,12 +44,12 @@ val liquidGlassSupported: Boolean
 
 data class LiquidGlassStyle(
     val cornerRadiusDp: Float,
-    val refractionHeightDp: Float = 32f,
-    val refractionAmountDp: Float = 30f,
-    val chromaticAberration: Float = 0.5f,
+    val refractionHeightDp: Float = 18f,
+    val refractionAmountDp: Float = 13f,
+    val chromaticAberration: Float = 0.22f,
     /** 磨砂模糊半径（dp），液态玻璃是「模糊 + 折射」两层 */
-    val blurRadiusDp: Float = 2.5f,
-    val borderAlpha: Float = 0.25f,
+    val blurRadiusDp: Float = 1.5f,
+    val borderAlpha: Float = 0.18f,
     val interiorMaskAlpha: Float = 0.03f,
     val isDark: Boolean = true,
 )
@@ -244,5 +244,8 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
 
     edgeLayer.renderEffect =
         RenderEffect.createRuntimeShaderEffect(shader, "content").asComposeRenderEffect()
-    translate(-paddingPx, -paddingPx) { drawLayer(edgeLayer) }
+    // 必须裁到可见圆角矩形，否则带 padding 的图层会溢出到栏外，把上面的内容也扭曲掉
+    clipPath(barPath) {
+        translate(-paddingPx, -paddingPx) { drawLayer(edgeLayer) }
+    }
 }

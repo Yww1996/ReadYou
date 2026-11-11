@@ -40,6 +40,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -70,6 +72,7 @@ import me.ash.reader.infrastructure.preference.LocalFeedsTopBarTonalElevation
 import me.ash.reader.infrastructure.preference.LocalNewVersionNumber
 import me.ash.reader.infrastructure.preference.LocalSkipVersionNumber
 import me.ash.reader.ui.component.FilterBar
+import me.ash.reader.ui.component.glass.GlassBackdrop
 import me.ash.reader.ui.component.base.DisplayText
 import me.ash.reader.ui.component.base.FeedbackIconButton
 import me.ash.reader.ui.component.base.RYScaffold
@@ -178,6 +181,9 @@ fun FeedsPage(
 
     BackHandler(true) { context.findActivity()?.moveTaskToBack(false) }
 
+    val glassBackdrop = rememberGraphicsLayer()
+    var backdropOrigin by remember { mutableStateOf(Offset.Zero) }
+
     RYScaffold(
         topBarTonalElevation = topBarTonalElevation.value.dp,
         //        containerTonalElevation = groupListTonalElevation.value.dp,
@@ -228,6 +234,7 @@ fun FeedsPage(
             )
         },
         content = {
+            GlassBackdrop(glassBackdrop, { backdropOrigin = it }) {
             PullToRefreshBox(state = syncingState, isRefreshing = isSyncing, onRefresh = doSync) {
                 LazyColumn(modifier = Modifier.fillMaxSize().drawVerticalScrollIndicator(listState), state = listState) {
                     item {
@@ -329,6 +336,7 @@ fun FeedsPage(
                     }
                 }
             }
+            }
         },
         bottomBar = {
             FilterBar(
@@ -344,6 +352,8 @@ fun FeedsPage(
                 filterBarFilled = true,
                 filterBarPadding = filterBarPadding.dp,
                 filterBarTonalElevation = filterBarTonalElevation.value.dp,
+                backdrop = glassBackdrop,
+                backdropOrigin = backdropOrigin,
             ) {
                 feedsViewModel.changeFilter(filterState.copy(filter = it))
             }
