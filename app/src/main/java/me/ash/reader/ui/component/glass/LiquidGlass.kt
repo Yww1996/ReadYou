@@ -64,6 +64,7 @@ uniform float refractionAmount;
 uniform float depthEffect;
 uniform float chromaticAberration;
 uniform float4 interiorMaskColor;
+uniform float4 panelTint;
 uniform float interiorMaskWidth;
 uniform float borderWidth;
 uniform float borderAlpha;
@@ -121,6 +122,7 @@ half4 main(float2 coord) {
     half4 blue = content.eval(refractedCoord - dispersedCoord * (2.0 / 3.0)); color.b += blue.b / 3.0; color.a += blue.a / 7.0;
     half4 purple = content.eval(refractedCoord - dispersedCoord); color.r += purple.r / 7.0; color.b += purple.b / 3.0; color.a += purple.a / 7.0;
   }
+  color = half4(mix(color.rgb, panelTint.rgb, panelTint.a), max(color.a, panelTint.a));
   float interiorMask = (1.0 - smoothstep(0.0, interiorMaskWidth, -sd)) * interiorMaskColor.a;
   color.rgb = mix(color.rgb, half3(interiorMaskColor.rgb), interiorMask);
   float innerLip = borderWidth > 0.001 ? 1.0 - smoothstep(0.0, borderWidth, -sd) : 0.0;
@@ -235,8 +237,13 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
         if (style.isDark) style.interiorMaskAlpha else style.interiorMaskAlpha * 2f,
     )
     shader.setFloatUniform("interiorMaskWidth", style.refractionHeightDp * density * 0.35f)
+    if (style.isDark) {
+        shader.setFloatUniform("panelTint", 0.045f, 0.05f, 0.06f, 0.62f)
+    } else {
+        shader.setFloatUniform("panelTint", 1f, 1f, 1f, 0.20f)
+    }
     shader.setFloatUniform("borderWidth", 1.2f * density)
-    shader.setFloatUniform("borderAlpha", style.borderAlpha)
+    shader.setFloatUniform("borderAlpha", if (style.isDark) style.borderAlpha * 1.8f else style.borderAlpha)
     shader.setFloatUniform("edgeShadowAlpha", if (style.isDark) 0.30f else 0.22f)
     shader.setFloatUniform("outerGlowAlpha", 0.14f)
     shader.setFloatUniform("isDark", if (style.isDark) 1f else 0f)
