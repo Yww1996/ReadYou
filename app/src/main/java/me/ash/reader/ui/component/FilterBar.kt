@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
@@ -29,9 +30,13 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
 import me.ash.reader.ui.component.glass.LiquidGlassStyle
-import me.ash.reader.ui.component.glass.liquidGlass
+import me.ash.reader.ui.component.glass.drawLiquidGlass
 import me.ash.reader.ui.component.glass.liquidGlassSupported
 import me.ash.reader.ui.component.glass.rememberLiquidGlassShader
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.draw.shadow
+import android.util.Log
 import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -71,27 +76,41 @@ fun FilterBar(
     val density = LocalDensity.current.density
     val isDark = LocalDarkTheme.current.isDarkTheme()
     var selfOrigin by remember { mutableStateOf(Offset.Zero) }
-    val useGlass = liquidGlassSupported && backdrop != null
+    val glassBlurLayer = rememberGraphicsLayer()
+    val glassEdgeLayer = rememberGraphicsLayer()
+    val shader = rememberLiquidGlassShader()
+    val useGlass = liquidGlassSupported && backdrop != null && shader != null
     val glassModifier =
         if (useGlass) {
-            val shader = rememberLiquidGlassShader()
             Modifier
-                .onGloballyPositioned { selfOrigin = it.positionInRoot() }
-                .liquidGlass(
-                    backdrop = backdrop,
-                    shader = shader,
-                    style =
-                        LiquidGlassStyle(
-                            cornerRadiusDp = 0f,
-                            refractionHeightDp = 26f,
-                            refractionAmountDp = 12f,
-                            chromatic = 0.9f,
-                            borderAlpha = 0.5f,
-                            isDark = isDark,
-                        ),
-                    sampleOrigin = selfOrigin - backdropOrigin,
-                    density = density,
+                .shadow(
+                    elevation = 10.dp,
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(26.dp),
+                    clip = false,
                 )
+                .onGloballyPositioned { selfOrigin = it.positionInRoot() }
+                .drawWithContent {
+                    val ok =
+                        runCatching {
+                                drawLiquidGlass(
+                                    backdrop = backdrop!!,
+                                    blurLayer = glassBlurLayer,
+                                    edgeLayer = glassEdgeLayer,
+                                    shader = shader,
+                                    style =
+                                        LiquidGlassStyle(
+                                            cornerRadiusDp = 26f,
+                                            isDark = isDark,
+                                        ),
+                                    sampleOrigin = selfOrigin - backdropOrigin,
+                                    density = density,
+                                )
+                            }
+                            .onFailure { Log.e("LiquidGlass", "绘制失败: $it") }
+                            .isSuccess
+                    if (!ok) drawRect(Color.Transparent)
+                    drawContent()
+                }
         } else Modifier
 
     Surface(
