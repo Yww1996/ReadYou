@@ -37,6 +37,9 @@ class GroupWithFeedsListUseCase @Inject constructor(
     private val accountService: AccountService,
 ) {
 
+    // 必须在 init 之前初始化：init 里的协程会立刻引用 feedsFlow，声明在它后面会拿到 null（偶发启动崩溃）
+    private val feedsFlow: MutableStateFlow<List<GroupWithFeed>> = MutableStateFlow(emptyList())
+
     private var currentJob: Job? = null
     private val accountFlow = accountService.currentAccountFlow.mapNotNull { it }
 
@@ -64,8 +67,6 @@ class GroupWithFeedsListUseCase @Inject constructor(
     private val _groupWithFeedsListFlow: MutableStateFlow<List<GroupWithFeed>> =
         MutableStateFlow<List<GroupWithFeed>>(emptyList())
     val groupWithFeedListFlow: StateFlow<List<GroupWithFeed>> = _groupWithFeedsListFlow
-
-    private val feedsFlow: MutableStateFlow<List<GroupWithFeed>> = MutableStateFlow(emptyList())
 
     private val defaultGroupId get() = accountService.getCurrentAccountId().getDefaultGroupId()
 

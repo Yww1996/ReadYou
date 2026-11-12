@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.graphics.Path
@@ -179,8 +180,10 @@ fun androidx.compose.ui.graphics.drawscope.DrawScope.drawLiquidGlass(
     style: LiquidGlassStyle,
     sampleOrigin: Offset,
     density: Float,
+    /** 玻璃矩形尺寸，默认铺满 DrawScope；滑动胶囊时传自己的大小 */
+    targetSize: Size = size,
 ) {
-    val barSize = size
+    val barSize = targetSize
     if (barSize.width <= 0f || barSize.height <= 0f) return
 
     val radiusPx = style.cornerRadiusDp * density

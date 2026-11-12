@@ -28,6 +28,8 @@ fun Modifier.liquidGlassSurface(
     backdropOrigin: Offset,
     cornerRadius: Dp,
     fallbackColor: Color,
+    /** 面板画完、内容画之前插入的一段绘制（滑动玻璃胶囊用） */
+    beforeContent: androidx.compose.ui.graphics.drawscope.DrawScope.() -> Unit = {},
 ): Modifier {
     val shader = rememberLiquidGlassShader()
     val blurLayer = rememberGraphicsLayer()
@@ -57,6 +59,7 @@ fun Modifier.liquidGlassSurface(
                     cornerRadius = CornerRadius(cornerRadius.toPx()),
                 )
             }
+            beforeContent()
             drawContent()
         }
 }
