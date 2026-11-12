@@ -2,7 +2,6 @@ package me.ash.reader.ui.component
 
 import android.os.Build
 import android.view.SoundEffectConstants
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,33 +15,20 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.layer.GraphicsLayer
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInRoot
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
-import me.ash.reader.ui.component.glass.LiquidGlassStyle
-import me.ash.reader.ui.component.glass.drawLiquidGlass
-import me.ash.reader.ui.component.glass.liquidGlassSupported
-import me.ash.reader.ui.component.glass.rememberLiquidGlassShader
-import androidx.compose.ui.graphics.rememberGraphicsLayer
-import androidx.compose.ui.draw.drawWithContent
-import android.util.Log
-import me.ash.reader.infrastructure.preference.LocalDarkTheme
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.ash.reader.domain.model.general.Filter
 import me.ash.reader.infrastructure.preference.FlowFilterBarStylePreference
 import me.ash.reader.infrastructure.preference.LocalThemeIndex
+import me.ash.reader.ui.component.glass.liquidGlassSupported
+import me.ash.reader.ui.component.glass.liquidGlassSurface
 import me.ash.reader.ui.ext.surfaceColorAtElevation
 import me.ash.reader.ui.theme.palette.onDark
 
@@ -67,46 +53,23 @@ fun FilterBar(
         MaterialTheme.colorScheme.primaryContainer
     } onDark MaterialTheme.colorScheme.secondaryContainer
 
-    val containerHeight = when (filterBarStyle) {
-        FlowFilterBarStylePreference.Icon.value -> 64.dp
+    val useGlass = liquidGlassSupported && backdrop != null
+    val containerHeight = when {
+        useGlass && filterBarStyle == FlowFilterBarStylePreference.Icon.value -> 52.dp
+        useGlass -> 60.dp
+        filterBarStyle == FlowFilterBarStylePreference.Icon.value -> 64.dp
         else -> 80.dp
     }
-
-    val density = LocalDensity.current.density
-    val isDark = LocalDarkTheme.current.isDarkTheme()
-    var selfOrigin by remember { mutableStateOf(Offset.Zero) }
-    val glassBlurLayer = rememberGraphicsLayer()
-    val glassPanelLayer = rememberGraphicsLayer()
-    val shader = rememberLiquidGlassShader()
-    val useGlass = liquidGlassSupported && backdrop != null && shader != null
-    val glassModifier =
-        if (useGlass) {
-            Modifier
-                .padding(start = 12.dp, end = 12.dp, bottom = 10.dp)
-                .onGloballyPositioned { selfOrigin = it.positionInRoot() }
-                .drawWithContent {
-                    val ok =
-                        runCatching {
-                                drawLiquidGlass(
-                                    backdrop = backdrop!!,
-                                    blurLayer = glassBlurLayer,
-                                    panelLayer = glassPanelLayer,
-                                    shader = shader,
-                                    style =
-                                        LiquidGlassStyle(
-                                            cornerRadiusDp = 28f,
-                                            isDark = isDark,
-                                        ),
-                                    sampleOrigin = selfOrigin - backdropOrigin,
-                                    density = density,
-                                )
-                            }
-                            .onFailure { Log.e("LiquidGlass", "绘制失败: $it") }
-                            .isSuccess
-                    if (!ok) drawRect(Color.Transparent)
-                    drawContent()
-                }
-        } else Modifier
+    val glassModifier = if (useGlass) {
+        Modifier
+            .padding(start = 24.dp, end = 24.dp, bottom = 10.dp)
+            .liquidGlassSurface(
+                backdrop = backdrop,
+                backdropOrigin = backdropOrigin,
+                cornerRadius = containerHeight / 2,
+                fallbackColor = MaterialTheme.colorScheme.surfaceContainer,
+            )
+    } else Modifier
 
     Surface(
         color =
