@@ -1,109 +1,52 @@
 <div align="center">
-    <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/icon.png">
-</div>
 
-<br>
-<br>
-<br>
+<img src="fastlane/metadata/android/en-US/images/icon.png" width="120" alt="Liquid Reader icon">
 
-<div align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/releases">
-        <img alt="Version" src="https://img.shields.io/github/v/release/ReadYouApp/ReadYou?color=c3e7ff&label=version&style=flat-square">
-    </a>
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
-    <br>
-    <a target="_blank" href="https://t.me/ReadYouApp">
-        <img alt="Telegram" src="https://img.shields.io/badge/Telegram-ReadYouApp-c3e7ff?logo=telegram&style=flat-square">
-    </a>
-    <a target="_blank" href="https://www.figma.com/file/ViBW8GbUgkTMmK6a80h8X1/Read-You?node-id=7028%3A23673">
-        <img alt="Figma" src="https://img.shields.io/badge/Figma-ReadYou-c3e7ff?logo=figma&style=flat-square">
-    </a>
-</div>
+# Liquid Reader
 
-<div dir="rtl" align="center">
-    <h1 dir="ltr">Read You</h1>
-    <p>این اپلیکیشن، یک کپی از <a href="https://reederapp.com/">Reeder</a> به منظور ارائه یک خبرخوان RSS مشابه Reeder برای اندروید است.</p>
-    <p>فارسی&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-TW.md">繁體中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README.md">English by DeepL</a></p>
-    <br/>
-    <br/>
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/startup.png" width="19.2%" alt="startup" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/feeds.png" width="19.2%" alt="feeds" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/flow.png" width="19.2%" alt="flow" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/read.png" width="19.2%" alt="read" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/settings.png" width="19.2%" alt="settings" />
-    <br/>
-    <br/>
-</div>
+یک خبرخوان RSS اندروید با نوار فیلتر شیشه‌ای، ساخته‌شده با Kotlin و Jetpack Compose. این مخزن نسخهٔ شخصی‌سازی‌شدهٔ Read You است.
 
-## ویژگی ها
+[![Version](https://img.shields.io/github/v/release/Yww1996/ReadYou)](https://github.com/Yww1996/ReadYou/releases/latest)
+[![License](https://img.shields.io/github/license/Yww1996/ReadYou)](LICENSE)
+[![Build](https://github.com/Yww1996/ReadYou/actions/workflows/build_commit.yaml/badge.svg)](https://github.com/Yww1996/ReadYou/actions/workflows/build_commit.yaml)
 
-اپلیکیشن **Read You** منطق Reeder را با [متریال دیزاین ۳ (You)](https://m3.material.io/) ترکیب نموده.
-
-پیشرفت های انجام شده تا کنون و اهدافی که به زودی روی آن ها کار خواهد شد به شرح زیر است:
-
-<div dir="rtl">
-
--   [x] لوکال
-    -   [x] مشترک شدن در فید ها
-    -   [x] وارد کردن از OPML
-    -   [x] همگام سازی مقاله
-    -   [x] ارسال نوتیفیکیشن در صورت بروزرسانی مقاله
-    -   [x] تجزیه کامل مطالب
-    -   [x] فیلتر بر اساس نخوانده‌ها و ستاره‌ها
-    -   [x] گروه‌بندی فید‌ها
-    -   [x] محلی‌سازی
-    -   [x] خروجی OPML
-    -   [x] جستجو برای مقاله
-    -   [ ] تنظیمات ترجیحی
-    -   [ ] انتشار APK
-    -   [ ] ویجت‌ها
-    -   [ ] ...
-
--   [ ] پشتیبانی از Fever API
--   [ ] پشتیبانی از Google Reader API
--   [ ] پشتیبانی از Inoreader API
--   [ ] ...
+[English](README.md) · [简体中文](README-zh-CN.md) · [繁體中文](README-zh-TW.md) · [Deutsch](README-de.md) · [日本語](README-ja.md) · [فارسی](README-fa.md)
 
 </div>
 
-> امکانات فوق فقط پیاده‌سازی ابتدایی هستند و ممکن است ایرادات ناشناخته‌ای وجود داشته باشد.
+## ویژگی‌ها
+
+- اشتراک RSS و ورود و خروج فایل OPML
+- حساب محلی و پشتیبانی از Fever، Google Reader API و FreshRSS
+- استخراج متن مقاله و خواندن با صدا
+- طراحی Material You و شیشهٔ مایع در Android 13 و بالاتر
+- رنگ‌بندی یکپارچهٔ شیشه در حالت روشن و تاریک
 
 ## دریافت
 
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="دریافت از F-Droid"
-     height="80">](https://f-droid.org/packages/me.ash.reader/)
+**[Liquid Reader APK →](https://github.com/Yww1996/ReadYou/releases/latest)**
 
-یا از [خروجی گیت‌هاب اکشن](https://github.com/ReadYouApp/ReadYou/releases) دانلود کنید.
+APK امضاشده را از Releases همین مخزن دریافت کنید. فروشگاه‌های دیگر نسخهٔ اصلی را توزیع می‌کنند.
 
-## ترجمه
+## نیازمندی‌ها
 
-<a target="_blank" href="https://hosted.weblate.org/engage/readyou/">
-<img src="https://hosted.weblate.org/widgets/readyou/-/287x66-white.png" alt="" />
-</a>
+Android 8.0 یا بالاتر (API 26). شیشهٔ مایع به Android 13 یا بالاتر (API 33) نیاز دارد.
 
-## بیلد
+## ساخت
 
-> اگر به نسخه پیش‌نمایش برنامه Read You نیاز دارید،  می‌توانید فایل های APK **preview version**  را از [تلگرام](https://t.me/ReadYouApp) دریافت کنید.
+JDK 17 و Android SDK 36 لازم است. گردش کار، آزمون‌های واحد و ساخت APK را اجرا می‌کند.
 
-اپلیکیشن **Read You** به صورت نیتیو پیاده سازی و با [Jetpack Compose](https://developer.android.com/jetpack/compose) طراحی شده است.
-
-۱. ابتدا لازم است سورس کد **Read You** را کلون کنید:
-
-```shell
-    git clone https://github.com/ReadYouApp/ReadYou.git
+```sh
+git clone https://github.com/Yww1996/ReadYou.git
+cd ReadYou
+./gradlew testGithubReleaseUnitTest assembleGithubRelease --max-workers=2
 ```
 
-۲. سپس آن را با [ااندروید استادیو (آخرین ورژن)](https://developer.android.com/studio) باز کنید.
+[GitHub Actions](https://github.com/Yww1996/ReadYou/actions/workflows/build_commit.yaml) · [Issues](https://github.com/Yww1996/ReadYou/issues)
 
-۳. سپس روی دکمه `▶ Run` کلیک کنید. برنامه به صورت خودکار بیلد و اجرا خواهد شد.
+## پروژهٔ اصلی و مجوز
 
-    > اگر با لگ همراه بود، لطفا `Release version build` را انتخاب کنید.
+بر پایهٔ [Read You](https://github.com/ReadYouApp/ReadYou) با حفظ نام پدیدآورندگان و مشارکت‌کنندگان. [GNU GPL v3.0](LICENSE).
 
 ## الهام گرفته از:
 

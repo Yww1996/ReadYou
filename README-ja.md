@@ -1,134 +1,52 @@
 <div align="center">
-    <img width="200" height="200" style="display: block; border: 1px solid #f5f5f5; border-radius: 9999px;" src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/icon.png">
+
+<img src="fastlane/metadata/android/en-US/images/icon.png" width="120" alt="Liquid Reader icon">
+
+# Liquid Reader
+
+Kotlin と Jetpack Compose で構築した、液体ガラスのフィルターバーを備える Android RSS リーダーです。Read You の個人フォークです。
+
+[![Version](https://img.shields.io/github/v/release/Yww1996/ReadYou)](https://github.com/Yww1996/ReadYou/releases/latest)
+[![License](https://img.shields.io/github/license/Yww1996/ReadYou)](LICENSE)
+[![Build](https://github.com/Yww1996/ReadYou/actions/workflows/build_commit.yaml/badge.svg)](https://github.com/Yww1996/ReadYou/actions/workflows/build_commit.yaml)
+
+[English](README.md) · [简体中文](README-zh-CN.md) · [繁體中文](README-zh-TW.md) · [Deutsch](README-de.md) · [日本語](README-ja.md) · [فارسی](README-fa.md)
+
 </div>
 
-<br>
-<br>
-<br>
+## 機能
 
-<div align="center">
-    <img alt="GitHub" src="https://img.shields.io/github/license/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/releases">
-        <img alt="Version" src="https://img.shields.io/github/v/release/ReadYouApp/ReadYou?color=c3e7ff&label=version&style=flat-square">
-    </a>
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/ReadYouApp/ReadYou?color=c3e7ff&style=flat-square">
-    <br>
-    <a target="_blank" href="https://t.me/ReadYouApp">
-        <img alt="Telegram" src="https://img.shields.io/badge/Telegram-ReadYouApp-c3e7ff?logo=telegram&style=flat-square">
-    </a>
-    <a target="_blank" href="https://www.figma.com/file/ViBW8GbUgkTMmK6a80h8X1/Read-You?node-id=7028%3A23673">
-        <img alt="Figma" src="https://img.shields.io/badge/Figma-ReadYou-c3e7ff?logo=figma&style=flat-square">
-    </a>
-</div>
-
-<div align="center">
-    <h1>Read You</h1>
-    <p> <a target="_blank" href="https://m3.material.io/">Material You</a> スタイルのAndroid RSS reader</p>
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README.md">English</a></p>
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-CN.md">简体中文</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-zh-TW.md">繁體中文 (Outdated)</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <a target="_blank" href="https://github.com/ReadYouApp/ReadYou/blob/main/README-fa.md">فارسی (Outdated)</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-    <p>日本語</a></p>
-    <br/>
-    <br/>
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/startup.png" width="19.2%" alt="startup" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/feeds.png" width="19.2%" alt="feeds" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/flow.png" width="19.2%" alt="flow" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/read.png" width="19.2%" alt="read" />
-    <img src="https://raw.githubusercontent.com/ReadYouApp/ReadYou/main/fastlane/metadata/android/en-US/images/phoneScreenshots/settings.png" width="19.2%" alt="settings" />
-    <br/>
-    <br/>
-</div>
-
-## 特徴
-
-**Read You** は [Material You](https://m3.material.io/) スタイルのAndroid RSS reader
-
-以下は、これまでの進捗状況と、近い将来に取り組むべき目標である:
-
-- [x] Subscribe to RSS links
-- [x] Import or export OPML files
-- [x] Notification of new articles
-- [x] Article readability optimization
-- [x] Full content parse for original articles
-- [x] Multi-account
-- [x] Read aloud
-- [ ] Android widget
-- [ ] ...
-
-## インテグレーション
-
-**Read You** は、既存のクラウドアカウントをデータソースとして使用できるよう、いくつかのサードパーティ・サービスAPIを統合しています
-
-- [x] Fever
-- [x] Google Reader
-- [x] FreshRSS
-- [ ] Miniflux
-- [ ] Tiny Tiny RSS
-- [ ] Inoreader
-- [ ] Feedly
-- [ ] Feedbin
-- [ ] ...
+- RSS 購読と OPML のインポート・エクスポート
+- ローカルアカウント、Fever、Google Reader API、FreshRSS に対応
+- 本文抽出、全文解析、読み上げ、読書設定
+- Material You と Android 13 以降の液体ガラス表示
+- ライト・ダーク両テーマでガラスの色調を統一
 
 ## ダウンロード
 
-[<img src="https://s1.ax1x.com/2023/01/12/pSu1a36.png" alt="Get it on GitHub" height="80">](https://github.com/ReadYouApp/ReadYou/releases)
-[<img src="https://s1.ax1x.com/2023/01/12/pSnTZ0f.png"
-     alt="Get it on Telegram Channel"
-     height="80">](https://t.me/ReadYouApp)
-[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/me.ash.reader/)
+**[Liquid Reader APK →](https://github.com/Yww1996/ReadYou/releases/latest)**
 
-F-Droid のリリースは、[F-Droid](https://f-droid.org/docs/FAQ_-_General/) により、他のリリースにアップグレードすることはできません
+このリポジトリの Releases から署名済み APK をダウンロードしてください。他のストアは上流版を配布しています。
 
-## Nightly
+## 動作環境
 
-テスト用にNightlyバージョンを提供しています<br/>
-これらのバージョンには最新の機能と改善が含まれていますが、通常のリリースほど安定していない可能性があります<br/>
-Nightlyビルドにはバグがある可能性があり、日常的な使用にはお勧めできませんのでご注意ください
-
-Nightlyバージョンは以下のリンクからダウンロードできます:
-
-<a target="_blank" href="https://github.com/ReadYouApp/ReadYou/actions/workflows/build_commit.yaml">Check Nightly Builds</a>
-
-GitHub Actionsページから最新のworkflowを選択し、workflowのsummaryページから成果物をダウンロードします(GitHubへのログインが必要な場合があります)
-
-**何か問題が発生した場合に備えて、Nightlyバージョンを試す前にデータをバックアップしておくことをお忘れなく**
-
-## スポンサーシップ
-
-**Read You** は、オープンソースコミュニティの恩恵を受けているオープンソースソフトウェアであり、すべてのユーザーが無料でその全機能を楽しむことができます<br/>
-もし僕の今の仕事を評価してくれるなら、コーヒーを一杯おごってくれてもいいですよ☕️
-
-[<img src="https://s1.ax1x.com/2023/01/12/pSnHqpQ.png" alt="donate" height="80">](https://ash7.io/sponsor)
-
-皆さまからの愛とサポートに感謝します❤️
-
-## ローカライズ・翻訳
-
-**Read You** 翻訳者の皆様、ありがとうございました。また、翻訳をご希望される方は、[Weblate](https://hosted.weblate.org/engage/readyou/) からご投稿ください
-
-[<img src="https://hosted.weblate.org/widgets/readyou/-/horizontal-auto.svg" alt="" />](https://hosted.weblate.org/engage/readyou/)
+Android 8.0 以降（API 26）。液体ガラスには Android 13 以降（API 33）が必要です。
 
 ## ビルド
 
-> Welcome to open a [pull request](https://github.com/ReadYouApp/ReadYou/pulls). [GitHub Actions](https://github.com/ReadYouApp/ReadYou/actions) automatically packages all flavors of apk files for each commit.
+JDK 17 と Android SDK 36 が必要です。ワークフローは単体テストと APK ビルドを実行します。
 
-**Read You** is based on [Jetpack Compose](https://developer.android.com/jetpack/compose) toolkit for building Android's native UI.
+```sh
+git clone https://github.com/Yww1996/ReadYou.git
+cd ReadYou
+./gradlew testGithubReleaseUnitTest assembleGithubRelease --max-workers=2
+```
 
-1. First you need to get the source code of **Read You**.
+[GitHub Actions](https://github.com/Yww1996/ReadYou/actions/workflows/build_commit.yaml) · [Issues](https://github.com/Yww1996/ReadYou/issues)
 
-   ```shell
-   git clone https://github.com/ReadYouApp/ReadYou.git
-   ```
+## 上流とライセンス
 
-2. Then open it via [Android Studio (latest version)](https://developer.android.com/studio).
-
-3. When you click the `▶ Run` button, it will be built and run automatically.
-
-    > In case of lag, please select Release version build.
+[Read You](https://github.com/ReadYouApp/ReadYou) を基にしています。原作者と貢献者の表記を保持しています。[GNU GPL v3.0](LICENSE)。
 
 ## クレジット
 
